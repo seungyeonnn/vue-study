@@ -61,8 +61,8 @@ vue create "project_name"
 <br /><br /><br />
 
 ## emit 전달하기 (자식 -> 부모)
-1. 자식 컴포넌트
-   **this.$emit("이름", 데이터)**
+1. 자식 컴포넌트 <br />
+   **this.$emit("이벤트 이름", 데이터)**
   ```
 <template>
   ...
@@ -87,7 +87,7 @@ export default Vue.extend({
   ```
 <br />
    
-2. 부모 컴포넌트의 자식 컴포넌트를 호출하는 부분
+2. 부모 컴포넌트의 자식 컴포넌트를 호출하는 부분 <br />
    **@이름 = "JavaScript code"**
 
 ```
