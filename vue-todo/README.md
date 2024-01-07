@@ -78,13 +78,14 @@ export default Vue.extend({
     // 키보드 이벤트에서 target.value 가져올게
     handleInput(event: any) {
       event.target.value;
+      // input이라는 이름으로 event.target.value 값을 보내줄게!
       this.$emit("input", event.target.value);
     },
   },
 });
 </script>
   ```
-input이라는 이름으로 event.target.value 값을 보내줄게!
+<br />
    
 2. 부모 컴포넌트의 자식 컴포넌트를 호출하는 부분
    **@이름 = "JavaScript code"**
