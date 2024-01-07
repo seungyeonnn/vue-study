@@ -28,6 +28,7 @@ vue create "project_name"
 ![image](https://github.com/seungyeonnn/vue-study/assets/42060859/960bbcf1-9bfa-4b73-bf93-861045729144)
 
 <br />
+
 ## Props 전달하기 (부모 -> 자식)
 1. 부모 컴포넌트에서 자식HTML 태그 안에 넘겨줄 Props 선언 <br />
    **v-bind:key="value"  or  :key="value"**
@@ -38,6 +39,7 @@ vue create "project_name"
     <TodoInput :item="todoText"></TodoInput>
   </div>
   ```
+
 <br />
 
 2. 자식 컴포넌트의 script 안에 props 넣어주기 <br />
