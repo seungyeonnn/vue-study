@@ -2,7 +2,7 @@
 
 ### 1. Vue cli로 프로젝트 생성
 ```
-vue create _name_
+vue create "project_name"
 ```
 
 ### 2. 개발 환경 설정
@@ -18,3 +18,6 @@ vue create _name_
   8) 설정 파일 위치 어떻게 할래? -> 별도의 파일로 분리할게~
   9) 다음 프로젝트를 위해 이 설정들 저장해 놓을래? 아니
 
+### 3. Vue.js에서 TypeScript 적용하는 방법
+  1. 서비스 구축 시, 처음부터 TS 사용 -> option으로 선택해서 TypeScript 기반 프로젝트 생성
+  2. 이미 구현된 서비스에 TS 점진적 적용 
