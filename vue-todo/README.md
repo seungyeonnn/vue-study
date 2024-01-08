@@ -31,8 +31,21 @@ vue create "project_name"
 
 ## Props 전달하기 (부모 -> 자식)
 1. 부모 컴포넌트에서 자식HTML 태그 안에 넘겨줄 Props 선언 <br />
-   **v-bind:key="value"  or  :key="value"**
-  ```
+   **v-bind:key="value"  or  :key="value"** <br />
+-  데이터 타입 / default / object 넣어줄 수 o
+```
+props : {
+  props명 : {
+    type: data type,
+    default: () => {
+      key1: value1,
+      key2: value2,
+      ...
+    }  
+  }
+}
+```
+```
   <div>
     <h1>Vue todo with TypeScript</h1>
     <!-- :item이라는 이름의 props로 전달할게! -->
@@ -116,4 +129,59 @@ export default Vue.extend({
 <br /><br /><br />
 
 
-## Vuex 전달하기
+## Vuex로 전달하기
+
+---
+<br /><br /><br />
+# props 속성 유효성 검사 및 타입 정의
+```
+methods: {
+  handleInput(event: InputEvent) {
+    this.$emit("input", event.target.value)
+  },
+}
+```
+event의 type: InputEvent <br />
+이렇게 하면 evnet.target.value에서 에러를 토해냄🧐<br />
+> Object is possibly 'null'
+> 객체는 null일수도 있어 null인데 속성 접근하면 안돼!
+-> 얘 null 아니야!를 보장해줘야 함
+<br />
+```
+// 방법 1. ! (non-null assertion type)으로 알려주기
+methods: {
+  handleInput(event: InputEvent) {
+    this.$emit("input", event.target!.value)
+  },
+}
+
+// 방법 2. event.target이 있는지 검사하고 없는 경우 return
+methods: {
+  handleInput(event: InputEvent) {
+    if (!event.target){
+      return
+    }
+    this.$emit("input", event.target.value)
+  },
+}
+
+// 근데 이렇게 해도 value가 오류를 토해낼 수 있음
+
+// 방법 3. Type을 지정해주기
+methods: {
+  handleInput(event: InputEvent) {
+    // event.target 타입은 HTMLInputElement니까 TS 너 신경쓰지마
+    const eventTarget = event.target as HTMLInputElement
+    this.$emit("input", eventTarget.value)
+  },
+}
+```
+
+
+
+
+
+
+
+
+
