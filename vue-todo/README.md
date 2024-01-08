@@ -1,7 +1,7 @@
 # Vue.js TypeScript 프로젝트 생성
 
 ### 1. Vue cli로 프로젝트 생성
-```
+```vue
 vue create "project_name"
 ```
 <br /><br />
@@ -33,7 +33,7 @@ vue create "project_name"
 1. 부모 컴포넌트에서 자식HTML 태그 안에 넘겨줄 Props 선언 <br />
    **v-bind:key="value"  or  :key="value"** <br />
 -  데이터 타입 / default / object 넣어줄 수 o
-```
+```vue
 props : {
   props명 : {
     type: data type,
@@ -45,7 +45,7 @@ props : {
   }
 }
 ```
-```
+```vue
   <div>
     <h1>Vue todo with TypeScript</h1>
     <!-- :item이라는 이름의 props로 전달할게! -->
@@ -58,7 +58,7 @@ props : {
 2. 자식 컴포넌트의 script 안에 props 넣어주기 <br />
    props 안에는 data type, default 값, object 넣어줄 수 o <br />
    **props: ['key']**
-```
+```vue
 <script lang="ts">
   import Vue from "vue";
 
@@ -76,7 +76,7 @@ props : {
 ## emit 전달하기 (자식 -> 부모)
 1. 자식 컴포넌트 <br />
    **this.$emit("이벤트 이름", 데이터)**
-  ```
+  ```vue
 <template>
   ...
     <!-- input에 입력될 값을 가져올 @input이벤트 핸들러로 handleInput 가져오기 -->
@@ -103,7 +103,7 @@ export default Vue.extend({
 2. 부모 컴포넌트의 자식 컴포넌트를 호출하는 부분 <br />
    **@이름 = "JavaScript code"**
 
-```
+```vue
 <template>
   ...
     <!-- 자식 컴포넌트에서 받아온 input에 부모 컴포넌트의 메서드 updateTodoText 바인딩 -->
@@ -134,7 +134,7 @@ export default Vue.extend({
 ---
 <br /><br /><br />
 # props 속성 유효성 검사 및 타입 정의
-```
+```vue
 methods: {
   handleInput(event: InputEvent) {
     this.$emit("input", event.target.value)
@@ -149,7 +149,8 @@ event의 type: InputEvent <br />
 
 <br />
 
-```
+```vue
+<script>
 // 방법 1. ! (non-null assertion type)으로 알려주기
 methods: {
   handleInput(event: InputEvent) {
@@ -177,7 +178,9 @@ methods: {
     this.$emit("input", eventTarget.value)
   },
 }
+</script>
 ```
+
 
 
 
