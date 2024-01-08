@@ -143,10 +143,12 @@ methods: {
 ```
 event의 type: InputEvent <br />
 이렇게 하면 evnet.target.value에서 에러를 토해냄🧐<br />
-> Object is possibly 'null'
-> 객체는 null일수도 있어 null인데 속성 접근하면 안돼!
--> 얘 null 아니야!를 보장해줘야 함
+> Object is possibly 'null' <br />
+> 객체는 null일수도 있어 null인데 속성 접근하면 안돼! <br />
+-> 얘 null 아니야!를 보장해줘야 함 <br />
+
 <br />
+
 ```
 // 방법 1. ! (non-null assertion type)으로 알려주기
 methods: {
