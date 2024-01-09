@@ -23,16 +23,19 @@ vue create "project_name"
   2. 이미 구현된 서비스에 TS 점진적 적용 
 <br /><br /><br />
 ---
-<br /><br /><br />
+
+<br />
+
 # 컴포넌트 간 데이터 전달하기
 ![image](https://github.com/seungyeonnn/vue-study/assets/42060859/960bbcf1-9bfa-4b73-bf93-861045729144)
 
 <br />
 
-## Props 전달하기 (부모 -> 자식)
+## 1) Props 전달하기 (부모 -> 자식)
 1. 부모 컴포넌트에서 자식HTML 태그 안에 넘겨줄 Props 선언 <br />
    **v-bind:key="value"  or  :key="value"** <br />
 -  데이터 타입 / default / object 넣어줄 수 o
+
 ```vue
 props : {
   props명 : {
@@ -51,13 +54,14 @@ props : {
     <!-- :item이라는 이름의 props로 전달할게! -->
     <TodoInput :item="todoText"></TodoInput>
   </div>
-  ```
+```
 
 <br />
 
 2. 자식 컴포넌트의 script 안에 props 넣어주기 <br />
    props 안에는 data type, default 값, object 넣어줄 수 o <br />
    **props: ['key']**
+   
 ```vue
 <script lang="ts">
   import Vue from "vue";
@@ -71,11 +75,13 @@ props : {
   });
 </script>
 ```
+
 <br /><br /><br />
 
-## emit 전달하기 (자식 -> 부모)
+## 2) emit 전달하기 (자식 -> 부모)
 1. 자식 컴포넌트 <br />
    **this.$emit("이벤트 이름", 데이터)**
+   
   ```vue
 <template>
   ...
@@ -97,7 +103,8 @@ export default Vue.extend({
   },
 });
 </script>
-  ```
+```
+
 <br />
    
 2. 부모 컴포넌트의 자식 컴포넌트를 호출하는 부분 <br />
@@ -129,11 +136,18 @@ export default Vue.extend({
 <br /><br /><br />
 
 
-## Vuex로 전달하기
+## 3) Vuex로 전달하기
+
+<br /><br /><br />
 
 ---
-<br /><br /><br />
+
+<br />
+
 # props 속성 유효성 검사 및 타입 정의
+
+<br />
+
 ```vue
 methods: {
   handleInput(event: InputEvent) {
@@ -141,6 +155,7 @@ methods: {
   },
 }
 ```
+
 event의 type: InputEvent <br />
 이렇게 하면 evnet.target.value에서 에러를 토해냄🧐<br />
 > Object is possibly 'null' <br />
@@ -181,6 +196,92 @@ methods: {
 </script>
 ```
 
+<br /> <br /> 
+
+---
+
+<br />
+
+# localStorage
+
+<br />
+
+## input 값 localStorage에 저장하기
+
+```vue
+loaclStorage.setItem('저장할 이름', 저장할 값)
+```
+
+```vue
+// TodoInput.vue
+<template>
+  // 버튼에 클릭 이벤트가 적용되면 addTodo라는 메서드 불러줄게
+  <button @click="addTodo></button>
+</template>
+<script>
+  methods:{
+    addTodo(){
+      // 부모 컴포넌트에게 add라는 이름의 이벤트 발생
+      this.$emit("add")
+    }
+  }
+</script>
+```
+
+```vue
+// App.vue
+<template>
+  // 자식 컴포넌트에서 $emit으로 받아온 add 이벤트가 들어오면
+  // addTodoItem 메서드 불러줄게~
+  // 자식 컴포넌트에서 $emit으로 @input 값 받아오기 그 값은 updateTodoText로 전달!
+  <TodoInput :item="todoText" @input="updateTodoText" @add="addTodoItem"></TodoInput>
+...
+</template>
+<script>
+  data: {
+    return {
+      // 
+      todoText: "",
+    }
+  },
+  mehtods: {
+    // $emit으로 받아온 값을 value라는 이름으로 가져와서 todoText값으로 갱신해줄게~
+    updateTodoText(value: string){
+      this.todoText = value
+    },
+    addTodoItem() {
+      // input에 값을 입력할 때마다 바뀌는 todoText 값은 이미 관리 되고 있음
+      // 값을 value에 저장해서 localStorage에 저장해줄거야
+      const value = this.todoText
+      loaclStorage.setItem(value, value)
+      // initTodoText 함수를 불러와서 input 창 비워주기
+      this.initTodoText()
+    }
+    initTodoText(){
+      this.todoText = ""
+    }
+}
+</script>
+```
+
+## localStoarge 값 가져와서 저장하기
+
+
+
+
+
+
+
+
+
+<br /> <br /> <br/>
+
+---
+
+# Vue LifeCylcle
+![image](https://github.com/seungyeonnn/vue-study/assets/42060859/de7efde7-22a4-479e-aa85-302eca67e059)
+
+<br />
 
 
 
