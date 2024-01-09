@@ -207,6 +207,7 @@ methods: {
 <br />
 
 ## input 값 localStorage에 저장하기
+### 1. setItem으로 저장
 
 ```vue
 loaclStorage.setItem('저장할 이름', 저장할 값)
@@ -253,7 +254,7 @@ loaclStorage.setItem('저장할 이름', 저장할 값)
       // input에 값을 입력할 때마다 바뀌는 todoText 값은 이미 관리 되고 있음
       // 값을 value에 저장해서 localStorage에 저장해줄거야
       const value = this.todoText
-      loaclStorage.setItem(value, value)
+      localStorage.setItem(value, value)
       // initTodoText 함수를 불러와서 input 창 비워주기
       this.initTodoText()
     }
@@ -263,12 +264,161 @@ loaclStorage.setItem('저장할 이름', 저장할 값)
 }
 </script>
 ```
+<br />
 
-## localStoarge 값 가져와서 저장하기
+### 2. STORAGE_KEY 활용해서 저장 (save)
 
+```vue
+<script>
+// localStorage.getItem 해서 가져올 key 값
+const STORAGE_KEY = "vue-todo-ts-v1";
+const storage = {
+  save(todoItems: Todo[]) {
+    // 배열 -> 문자열 된 것을 setItem에 그대로 넣게 됨
+    const parsed = JSON.stringify(todoItems);
+    // stoarge_key에 저장
+    localStorage.setItem(STORAGE_KEY, parsed);
+  }
+};
 
+// interface: 객체를 위한 type
+// export로 모듈화해서 내보내줘야 다른 곳에서도 사용할 수 o
+export interface Todo {
+  title: string;
+  done: boolean;
+}
 
+export default Vue.extend({
+  data() {
+    return {
+      todoText: "",
+      // todoItems는 위에서 정의한 interface가 배열로 들어오는 거야!
+      // type 정의 시, as를 사용해서 initialize
+      todoItems: [] as Todo[],
+    };
+  },
+  
+    addTodoItem() {
+      // input에 입력할 때마다 바뀌는 todoText 값이 위에서 이미 관리 되고 있기 때문에
+      // 값을 value에 저장해서 얘를 localStorage에 저장해주는 역할
+      const value = this.todoText;
+      // 아래 push에 들어갈 type
+      const todo: Todo = {
+        title: value, // this.todoText로 가져온 value를 title에 엮어주기
+        done: false, // 완료 유무의 초기 값은 false
+      };
+      // todoItems 라는 배열에 value 값을 넣어줄게
+      this.todoItems.push(todo);
+      storage.save(this.todoItems);
+      // localStorage.setItem(value, value); // key, value를 같은 형태로 저장
+      // initTodoText 함수를 불러와서 input창 비워주기
+      this.initTodoText();
+    },
+    
+  },
+</script>
+```
 
+<br />
+
+## localStoarge 값 가져와서 저장하기 (fetch)
+
+```vue
+<script>
+// localStorage.getItem 해서 가져올 key 값
+const STORAGE_KEY = "vue-todo-ts-v1";
+const storage = {
+  // fetch method -> return type은 Todo[]
+  // storage.fetch를 하면 localStorage에 있는 데이터를 불러와서
+  // component에서 쓸 수 o 상태 변환해 주는 기능
+  fetch(): Todo[] {
+    // STORAGE_KEY를 가지고 값들을 가져올거야 없다면 빈 배열을 줄게
+    const todoItems = localStorage.getItem(STORAGE_KEY) || "[]";
+    // 가져온 item 변환해 줄게 (JSON.parse로 배열 -> 객체)
+    const result = JSON.parse(todoItems);
+    return result;
+  },
+};
+</script>
+```
+
+<br /><br /><br />
+
+---
+
+<br />
+
+# .vue 파일에서의 타입스크립트 정의 방식
+  - data
+    초기화를 할 때 as Type 을 통해서 어떤 타입인지 정의<br />
+    -> 이후 파일 안에서 타입을 벗어나면 error    
+    ```vue
+    data(){
+      return {
+        todoText: "",
+        todoItems: [] as Todo[]
+      }
+    }
+    ```
+    todoItems는 Todo 객체를 갖는 배열
+
+    ```vue
+    fetchTodoItems(){
+      this.todoItems = 1
+    }
+    ```
+    -> 이렇게 타입에 맞지 않는 애를 넣어주면 너 이거 뭐야 타입 뭐야!! 하고 에러 토해냄😥
+    <br />
+  - methods
+    * 메서드의 반환 타입 정의
+      메서드에 return이 없는 경우 알아서 void로 지정 <br />
+    ```vue
+    fetchTodoItems() {
+      return "hi"
+    }
+    ```
+    이렇게 return이 있는 경우 타입을 지정해줌(여기선 string) <br />
+    근데 다른 곳에서 타입이 맞지 않는 애를 넣어주면 또 에러 토해줌
+    <br />
+    * 파라미터 타입 정의
+      ```vue
+      removeTodoItem(index: number){
+        ...
+      }
+      ```
+      메서드를 사용했을 때 원하지 않는 타입이 들어가는 것을 방지 <br />
+      
+  - props
+    ```vue
+    <script>
+    // JavaScirpt ver
+    export default Vue.extend({
+      props: {
+        item: {
+          type: String,
+          required: true
+        }
+      }
+    })
+
+    // TypeScript ver
+    export default Vue.extend({
+      props: {
+        // todoItem은 object인데 실제 들어가는 Object의 Type은 Todo
+        // 이 Todo 안에는 title과 done이라는 boolean 선택 값이 정의 될 거야~
+        todoItem: Object as PropType<Todo>
+      }
+    })
+    </script>
+    ```
+    -> 이렇게하면 컴포넌트 내부에서 todoItem에 대한 추론이 가능 <br />
+    맞지 않는 타입을 넣으면 에러
+    <br />
+    
+  - computed
+    메서드와 다르게 꼭 반환타입을 지정해줘야 함! <br />
+    그래야 반환 타입에 대해 올바른 추론 값을 받을 수 ㅇ
+    
 
 
 
