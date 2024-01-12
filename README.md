@@ -1,6 +1,9 @@
 # vue-study
 Have a vue day 😊✨
 <br />
+- [vue-chart](https://github.com/seungyeonnn/vue-study/tree/main/vue-chart)<br />
+  Vue with Chart.js 📈
+
 - [vue-news](https://github.com/seungyeonnn/vue-study/tree/main/vue-news)<br />
   Vue2 + TypeScript Project, Gradually apply TypeScript to existing project !
 
