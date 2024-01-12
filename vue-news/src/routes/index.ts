@@ -3,7 +3,7 @@ import VueRouter, { Route, NavigationGuardNext } from "vue-router";
 import { ItemView, UserView } from "../views";
 import createListView from "../views/CreateListView";
 import bus from "../utils/bus";
-import store from "../store/index.js";
+import store from "../store/index";
 
 Vue.use(VueRouter);
 
@@ -25,12 +25,8 @@ export default new VueRouter({
         next: NavigationGuardNext<Vue>
       ) {
         bus.$emit("on:progress");
-        try {
-          await store.dispatch("FETCH_LIST", routeTo.name);
-          next();
-        } catch (error) {
-          console.log("failed to fetch news items");
-        }
+        // router 제공
+        next();
         // .dispatch("FETCH_LIST", routeTo.name)
         // .then(() => next())
         // .catch(() => new Error("failed to fetch news items"));

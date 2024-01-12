@@ -1,6 +1,12 @@
+<!-- 
+  ListItem.vue
+  - router로 불러와서 데이터가 준비 되면 해당 ListItems.vue의 데이터와 연결 
+  - router에 들어가기 전에 데이터를 준비하기 위해 store(상태관리)에 
+    데이터를 담아 놓고 front에서 가져오는 구조
+-->
 <template>
   <ul class="news-list">
-    <li v-for="news in listItems" :key="news.id" class="post">
+    <li v-for="news in items" :key="news.id" class="post">
       <div class="points">
         {{ news.points || 0 }}
       </div>
@@ -28,21 +34,40 @@
           }}</router-link>
         </small>
         <small v-if="news.time_ago" class="link-text">
-          {{ news.time_ago }}
+          {{ timeAgo(news) }}
         </small>
       </div>
     </li>
   </ul>
 </template>
-
-<script>
-export default {
+<script lang="ts">
+import { NewsItem } from "@/api";
+import Vue, { PropType } from "vue";
+export default Vue.extend({
+  props: {
+    items: {
+      type: Array as PropType<NewsItem[]>,
+      required: true,
+    },
+  },
+  methods: {
+    timeAgo(news: NewsItem): string {
+      return news.time_ago.concat(", 2021");
+    },
+  },
+  // computed 많이 활용하기
+  // template에서 연산식이 늘어나거나 조건식이 늘어났을 때 state 레벨에서 디버깅 가능
+  // computed를 쓰면서 template을 간결하게 가져가기
   computed: {
-    listItems() {
+    // timeAgo(): string {
+    //   return this.items[0].time_ago.concat();
+    // },
+    listItems(): any {
+      // state에 있는 값 가져와서 넣어줄게~
       return this.$store.getters.fetchedList;
     },
   },
-};
+});
 </script>
 
 <style scoped>
