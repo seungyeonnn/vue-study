@@ -1,7 +1,12 @@
 ## 외부 라이브러리 타입 정의
 
-npm i @types/라이브러리 이름 <br />
---> @types 라이브러리가 제공되지 않는 경우
+```
+npm i @types/라이브러리 이름
+```
+
+ <br />
+
+> @types 라이브러리가 제공되지 않는 경우
 
 1. src/types/project.d.ts
 
