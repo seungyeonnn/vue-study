@@ -1,16 +1,27 @@
 <template>
-  <div><canvas id="myChart"></canvas></div>
+  <div><canvas id="myChart" ref="mychart"></canvas></div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { VueConstructor } from "vue";
+import { MyVueRefs } from "./types/index";
 // import { Chart } from "chart.js";
 
-export default Vue.extend({
+// Vue.extend -> Vue의 타입이 내부적으로 추론
+// 아래 얘는 constructor 안에 제네릭으로 vue와 ref 합집합의 타입을 넣을게~
+// Vue 안에 ref의 타입을 key string? 뿐만 아니라 my: ~element라는 타입까지 확장돼서 추론될 수 있게 정의한 것
+export default (Vue as MyVueRefs<{ myChart: HTMLCanvasElement }>).extend({
+  methods: {
+    sayHi() {
+      this.$refs.my;
+      const canvasElement = this.$refs.myChart;
+    },
+  },
   mounted() {
-    const canvasElement = document.getElementById(
-      "myChart"
-    ) as HTMLCanvasElement;
+    // const canvasElement = document.getElementById(
+    //   "myChart"
+    // ) as HTMLCanvasElement;
+    const canvasElement = this.$refs.myChart;
     // 여기서의 ctx : canvas이거나 null이라는 2가지의 타입을 가짐
     const ctx = canvasElement.getContext("2d");
 
