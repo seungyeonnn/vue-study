@@ -1,55 +1,58 @@
 # Vue.js TypeScript 프로젝트 생성
 
 ### 1. Vue cli로 프로젝트 생성
+
 ```vue
 vue create "project_name"
 ```
-<br /><br />
-### 2. 개발 환경 설정
-  ![image](https://github.com/seungyeonnn/vue-study/assets/42060859/decbfc05-7da5-49a2-93c7-caf5bda291fe)
 
-  1) preset 설정 어떤걸로 할거야? (preset : 뷰 플러그인의 집합)
-  2) 프로젝트에서 사용할 필요한 기능을 골라 -> Babel, TS, Linter 쓸게
-  3) Vue 버전 선택 -> 2.x 버전 쓸게
-  4) 클래스 컴포넌트 사용할거야? -> 아니
-  5) Babel과 TS 같이 쓸거야? -> 웅
-  6) linter, formatter 어떤 거 쓸래? -> ESLint, Prettier 쓸게
-  7) 추가적인 lint 기능 -> Lint on save
-  8) 설정 파일 위치 어떻게 할래? -> 별도의 파일로 분리할게~
-  9) 다음 프로젝트를 위해 이 설정들 저장해 놓을래? 아니
-<br /><br /><br />
+<br /><br />
+
+### 2. 개발 환경 설정
+
+![image](https://github.com/seungyeonnn/vue-study/assets/42060859/decbfc05-7da5-49a2-93c7-caf5bda291fe)
+
+1. preset 설정 어떤걸로 할거야? (preset : 뷰 플러그인의 집합)
+2. 프로젝트에서 사용할 필요한 기능을 골라 -> Babel, TS, Linter 쓸게
+3. Vue 버전 선택 -> 2.x 버전 쓸게
+4. 클래스 컴포넌트 사용할거야? -> 아니
+5. Babel과 TS 같이 쓸거야? -> 웅
+6. linter, formatter 어떤 거 쓸래? -> ESLint, Prettier 쓸게
+7. 추가적인 lint 기능 -> Lint on save
+8. 설정 파일 위치 어떻게 할래? -> 별도의 파일로 분리할게~
+9. 다음 프로젝트를 위해 이 설정들 저장해 놓을래? 아니
+   <br /><br /><br />
+
 ### 3. Vue.js에서 TypeScript 적용하는 방법
-  1. 서비스 구축 시, 처음부터 TS 사용 -> option으로 선택해서 TypeScript 기반 프로젝트 생성<br />
-  2. 이미 구현된 서비스에 TS 점진적 적용 
-<br /><br /><br />
+
+1. 서비스 구축 시, 처음부터 TS 사용 -> option으로 선택해서 TypeScript 기반 프로젝트 생성<br />
+2. 이미 구현된 서비스에 TS 점진적 적용
+   <br /><br /><br />
+
 ---
 
 <br />
 
 # 컴포넌트 간 데이터 전달하기
+
 ![image](https://github.com/seungyeonnn/vue-study/assets/42060859/960bbcf1-9bfa-4b73-bf93-861045729144)
 
 <br />
 
 ## 1) Props 전달하기 (부모 -> 자식)
+
 1. 부모 컴포넌트에서 자식HTML 태그 안에 넘겨줄 Props 선언 <br />
-   **v-bind:key="value"  or  :key="value"** <br />
--  데이터 타입 / default / object 넣어줄 수 o
+   **v-bind:key="value" or :key="value"** <br />
+
+- 데이터 타입 / default / object 넣어줄 수 o
 
 ```vue
-props : {
-  props명 : {
-    type: data type,
-    default: () => {
-      key1: value1,
-      key2: value2,
-      ...
-    }  
-  }
-}
+props : { props명 : { type: data type, default: () => { key1: value1, key2:
+value2, ... } } }
 ```
+
 ```vue
-  <div>
+<div>
     <h1>Vue todo with TypeScript</h1>
     <!-- :item이라는 이름의 props로 전달할게! -->
     <TodoInput :item="todoText"></TodoInput>
@@ -61,46 +64,47 @@ props : {
 2. 자식 컴포넌트의 script 안에 props 넣어주기 <br />
    props 안에는 data type, default 값, object 넣어줄 수 o <br />
    **props: ['key']**
-   
+
 ```vue
 <script lang="ts">
-  import Vue from "vue";
+import Vue from "vue";
 
-  export default Vue.extend({
-    // item이라는 props를 받을 준비 완료~
-    props: ["item"],
+export default Vue.extend({
+  // item이라는 props를 받을 준비 완료~
+  props: ["item"],
 
-    //
-    },
-  });
+  //
+  },
+});
 </script>
 ```
 
 <br /><br /><br />
 
 ## 2) emit 전달하기 (자식 -> 부모)
+
 1. 자식 컴포넌트 <br />
    **this.$emit("이벤트 이름", 데이터)**
-   
-  ```vue
+
+```vue
 <template>
   ...
-    <!-- input에 입력될 값을 가져올 @input이벤트 핸들러로 handleInput 가져오기 -->
-    <input @input="handleInput" />
+  <!-- input에 입력될 값을 가져올 @input이벤트 핸들러로 handleInput 가져오기 -->
+  <input @input="handleInput" />
   ...
 </template>
 
 <script lang="ts">
 ...
 export default Vue.extend({
-  methods: {
-    // 키보드 이벤트에서 target.value 가져올게
-    handleInput(event: any) {
-      event.target.value;
-      // input이라는 이름으로 event.target.value 값을 보내줄게!
-      this.$emit("input", event.target.value);
-    },
+methods: {
+  // 키보드 이벤트에서 target.value 가져올게
+  handleInput(event: any) {
+    event.target.value;
+    // input이라는 이름으로 event.target.value 값을 보내줄게!
+    this.$emit("input", event.target.value);
   },
+},
 });
 </script>
 ```
@@ -113,28 +117,27 @@ export default Vue.extend({
 ```vue
 <template>
   ...
-    <!-- 자식 컴포넌트에서 받아온 input에 부모 컴포넌트의 메서드 updateTodoText 바인딩 -->
-    <TodoInput :item="todoText"  @input="updateTodoText"></TodoInput>
+  <!-- 자식 컴포넌트에서 받아온 input에 부모 컴포넌트의 메서드 updateTodoText 바인딩 -->
+  <TodoInput :item="todoText" @input="updateTodoText"></TodoInput>
   ...
 </template>
 
 <script lang="ts">
+...
+export default Vue.extend({
   ...
-  export default Vue.extend({
-    ...
-    // 자식 컴포넌트에서 input으로 보내준 값이 updateTodoText 메서드를 통해 value로 들어오게 됨
-    // 그리고 그 값은 todoText의 값을 갱신해줌 -> TodoInput의 :item="todoText" 값을 업데이
-    methods: {
-      updateTodoText(value: any) {
-        this.todoText = value;
-      },
+  // 자식 컴포넌트에서 input으로 보내준 값이 updateTodoText 메서드를 통해 value로 들어오게 됨
+  // 그리고 그 값은 todoText의 값을 갱신해줌 -> TodoInput의 :item="todoText" 값을 업데이
+  methods: {
+    updateTodoText(value: any) {
+      this.todoText = value;
     },
-  });
+  },
+});
 </script>
 ```
 
 <br /><br /><br />
-
 
 ## 3) Vuex로 전달하기
 
@@ -149,18 +152,16 @@ export default Vue.extend({
 <br />
 
 ```vue
-methods: {
-  handleInput(event: InputEvent) {
-    this.$emit("input", event.target.value)
-  },
-}
+methods: { handleInput(event: InputEvent) { this.$emit("input",
+event.target.value) }, }
 ```
 
 event의 type: InputEvent <br />
 이렇게 하면 evnet.target.value에서 에러를 토해냄🧐<br />
+
 > Object is possibly 'null' <br />
 > 객체는 null일수도 있어 null인데 속성 접근하면 안돼! <br />
--> 얘 null 아니야!를 보장해줘야 함 <br />
+> -> 얘 null 아니야!를 보장해줘야 함 <br />
 
 <br />
 
@@ -196,7 +197,7 @@ methods: {
 </script>
 ```
 
-<br /> <br /> 
+<br /> <br />
 
 ---
 
@@ -207,6 +208,7 @@ methods: {
 <br />
 
 ## input 값 localStorage에 저장하기
+
 ### 1. setItem으로 저장
 
 ```vue
@@ -232,16 +234,20 @@ loaclStorage.setItem('저장할 이름', 저장할 값)
 ```vue
 // App.vue
 <template>
-  // 자식 컴포넌트에서 $emit으로 받아온 add 이벤트가 들어오면
-  // addTodoItem 메서드 불러줄게~
-  // 자식 컴포넌트에서 $emit으로 @input 값 받아오기 그 값은 updateTodoText로 전달!
-  <TodoInput :item="todoText" @input="updateTodoText" @add="addTodoItem"></TodoInput>
-...
+  // 자식 컴포넌트에서 $emit으로 받아온 add 이벤트가 들어오면 // addTodoItem
+  메서드 불러줄게~ // 자식 컴포넌트에서 $emit으로 @input 값 받아오기 그 값은
+  updateTodoText로 전달!
+  <TodoInput
+    :item="todoText"
+    @input="updateTodoText"
+    @add="addTodoItem"
+  ></TodoInput>
+  ...
 </template>
 <script>
   data: {
     return {
-      // 
+      //
       todoText: "",
     }
   },
@@ -264,6 +270,7 @@ loaclStorage.setItem('저장할 이름', 저장할 값)
 }
 </script>
 ```
+
 <br />
 
 ### 2. STORAGE_KEY 활용해서 저장 (save)
@@ -297,7 +304,7 @@ export default Vue.extend({
       todoItems: [] as Todo[],
     };
   },
-  
+
     addTodoItem() {
       // input에 입력할 때마다 바뀌는 todoText 값이 위에서 이미 관리 되고 있기 때문에
       // 값을 value에 저장해서 얘를 localStorage에 저장해주는 역할
@@ -314,7 +321,7 @@ export default Vue.extend({
       // initTodoText 함수를 불러와서 input창 비워주기
       this.initTodoText();
     },
-    
+
   },
 </script>
 ```
@@ -349,95 +356,119 @@ const storage = {
 <br />
 
 # .vue 파일에서의 타입스크립트 정의 방식
-  - data
-    초기화를 할 때 as Type 을 통해서 어떤 타입인지 정의<br />
-    -> 이후 파일 안에서 타입을 벗어나면 error    
+
+- data
+  초기화를 할 때 as Type 을 통해서 어떤 타입인지 정의<br />
+  -> 이후 파일 안에서 타입을 벗어나면 error
+
+  ```vue
+  data(){ return { todoText: "", todoItems: [] as Todo[] } }
+  ```
+
+  todoItems는 Todo 객체를 갖는 배열
+
+  ```vue
+  fetchTodoItems(){ this.todoItems = 1 }
+  ```
+
+  -> 이렇게 타입에 맞지 않는 애를 넣어주면 너 이거 뭐야 타입 뭐야!! 하고 에러 토해냄😥
+  <br />
+
+- methods
+  - 메서드의 반환 타입 정의
+    메서드에 return이 없는 경우 알아서 void로 지정 <br />
+  ```vue
+  fetchTodoItems() { return "hi" }
+  ```
+  이렇게 return이 있는 경우 타입을 지정해줌(여기선 string) <br />
+  근데 다른 곳에서 타입이 맞지 않는 애를 넣어주면 또 에러 토해줌
+  <br />
+  - 파라미터 타입 정의
     ```vue
-    data(){
-      return {
-        todoText: "",
-        todoItems: [] as Todo[]
+    removeTodoItem(index: number){ ... }
+    ```
+    메서드를 사용했을 때 원하지 않는 타입이 들어가는 것을 방지 <br />
+- props
+
+  ```vue
+  <script>
+  // JavaScirpt ver
+  export default Vue.extend({
+    props: {
+      item: {
+        type: String,
+        required: true
       }
     }
-    ```
-    todoItems는 Todo 객체를 갖는 배열
+  })
 
-    ```vue
-    fetchTodoItems(){
-      this.todoItems = 1
+  // TypeScript ver
+  export default Vue.extend({
+    props: {
+      // todoItem은 object인데 실제 들어가는 Object의 Type은 Todo
+      // 이 Todo 안에는 title과 done이라는 boolean 선택 값이 정의 될 거야~
+      todoItem: Object as PropType<Todo>
     }
-    ```
-    -> 이렇게 타입에 맞지 않는 애를 넣어주면 너 이거 뭐야 타입 뭐야!! 하고 에러 토해냄😥
-    <br />
-  - methods
-    * 메서드의 반환 타입 정의
-      메서드에 return이 없는 경우 알아서 void로 지정 <br />
-    ```vue
-    fetchTodoItems() {
-      return "hi"
-    }
-    ```
-    이렇게 return이 있는 경우 타입을 지정해줌(여기선 string) <br />
-    근데 다른 곳에서 타입이 맞지 않는 애를 넣어주면 또 에러 토해줌
-    <br />
-    * 파라미터 타입 정의
-      ```vue
-      removeTodoItem(index: number){
-        ...
-      }
-      ```
-      메서드를 사용했을 때 원하지 않는 타입이 들어가는 것을 방지 <br />
-      
-  - props
-    ```vue
-    <script>
-    // JavaScirpt ver
-    export default Vue.extend({
-      props: {
-        item: {
-          type: String,
-          required: true
-        }
-      }
-    })
+  })
+  </script>
+  ```
 
-    // TypeScript ver
-    export default Vue.extend({
-      props: {
-        // todoItem은 object인데 실제 들어가는 Object의 Type은 Todo
-        // 이 Todo 안에는 title과 done이라는 boolean 선택 값이 정의 될 거야~
-        todoItem: Object as PropType<Todo>
-      }
-    })
-    </script>
-    ```
-    -> 이렇게하면 컴포넌트 내부에서 todoItem에 대한 추론이 가능 <br />
-    맞지 않는 타입을 넣으면 에러
-    <br />
-    
-  - computed
-    메서드와 다르게 꼭 반환타입을 지정해줘야 함! <br />
-    그래야 반환 타입에 대해 올바른 추론 값을 받을 수 ㅇ
-    
+  -> 이렇게하면 컴포넌트 내부에서 todoItem에 대한 추론이 가능 <br />
+  맞지 않는 타입을 넣으면 에러
+  <br />
 
+- computed
+  메서드와 다르게 꼭 반환타입을 지정해줘야 함! <br />
+  그래야 반환 타입에 대해 올바른 추론 값을 받을 수 ㅇ
 
+<br />
 
+# event type 정의
 
+event.target.value가 에러나는 이유 <br />
+
+```vue
+<script>
+methods: {
+ handleInput(event: InputEvent) {
+   event.target.value
+ }
+</script>
+```
+
+여기서 event.target은 EventTarget | null 이라는 타입으로 정의가 되어 있어서 바꿀 수 x <br />
+EventTarget | null (기존 타입) <-> HTMLInputElement (우리가 원하는 타입)
+<br /> 하지만 서로 호환이 안됨 ㅠ <br />
+커스텀 타입을 만들어서 활용하기! <br />
+
+## namespace 생성
+
+```vue
+<script>
+// InputEvent는 이미 내부적으로 선언된 typescript 타입
+// InputEvent를 상속
+받아서 Input 구현 /* eslint-disable @typescript-eslint/no-namespace */
+export namespace VueEvent {
+  export interface Input extends InputEvent { target: null;
+  }
+}
+
+// TodoInput.vue
+methods: {
+    // VueEvent.Input<HTMLInputElement> 넣어주면
+    // HTMLInpuElement가 가지고 있는 value 속성을 사용할 수 o!!
+    handleInput(event: VueEvent.Input<HTMLInputElement>) {
+   ...
+    },
+</script>
+```
 
 <br /> <br /> <br/>
 
 ---
 
 # Vue LifeCylcle
+
 ![image](https://github.com/seungyeonnn/vue-study/assets/42060859/de7efde7-22a4-479e-aa85-302eca67e059)
 
 <br />
-
-
-
-
-
-
-
-
-

@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { VueEvent } from "../types/index";
 
 export default Vue.extend({
   // props : ["item"], item이라는 props를 받을 준비 완료~
@@ -21,11 +22,11 @@ export default Vue.extend({
   },
   methods: {
     // 키보드 이벤트에서 target.value 가져올게
-    handleInput(event: InputEvent) {
+    handleInput(event: VueEvent.Input<HTMLInputElement>) {
       const eventTarget = event.target as HTMLInputElement;
       // $emit : 이벤트와 함께 특정 값을 내보낼 수 있음
       //         input이라는 이름으로 event.target.value 값을 보내줄게!
-      this.$emit("input", eventTarget.value);
+      this.$emit("input", event.target.value);
     },
     // button 클릭 시 addTodo 메소드 실행!
     // $emit을 통해서 부모 컴포넌트에게 add라는 이름의 이벤트 발생
